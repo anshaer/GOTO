@@ -6,10 +6,21 @@
     <script>
         async function loadRedirects() {
             try {
-                const response = await fetch("/redirects.json");
-                const redirects = await response.json();
+                // 定義要加載的 JSON 文件
+                const jsonFiles = ["/redirects-set1.json", "/redirects-set2.json"];
+                let redirects = {};
+
+                // 依序加載 JSON 並合併
+                for (const file of jsonFiles) {
+                    const response = await fetch(file);
+                    const data = await response.json();
+                    Object.assign(redirects, data); // 合併數據
+                }
+
+                // 解析當前網址
                 const path = window.location.pathname;
 
+                // 如果匹配，則跳轉
                 if (redirects[path]) {
                     window.location.href = redirects[path];
                 } else {
