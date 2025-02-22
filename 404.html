@@ -4,18 +4,9 @@
     <meta charset="UTF-8">
     <title>Redirecting...</title>
     <script>
-        // 取得當前網址路徑，並去掉 GitHub Pages 的 repo 名稱（如果有的話）
-        let path = window.location.pathname;
+        let path = decodeURIComponent(window.location.pathname);
 
-        // 如果你的 GitHub Pages 網址是 https://你的用戶名.github.io/你的倉庫名/
-        // 你需要去掉 "/你的倉庫名"，只保留 /01 這類的路徑
-        const repoName = "/你的倉庫名"; // ⚠️ 如果是根域名，請設為空字符串 ""
-        if (path.startsWith(repoName)) {
-            path = path.replace(repoName, "");
-        }
-
-        // 加載重定向 JSON
-        fetch('/redirects.json') // 確保這個文件能被正確訪問
+        fetch('/redirects.json')
             .then(response => response.json())
             .then(redirects => {
                 if (redirects[path]) {
