@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        async function loadRedirects() {
+            try {
+                const response = await fetch("/redirects.json");
+                const redirects = await response.json();
+                const path = window.location.pathname;
+
+                if (redirects[path]) {
+                    window.location.href = redirects[path];
+                } else {
+                    document.body.innerHTML = "<h2>未找到跳转目标，请检查网址。</h2>";
+                }
+            } catch (error) {
+                document.body.innerHTML = "<h2>加载跳转规则失败，请稍后再试。</h2>";
+            }
+        }
+
+        loadRedirects();
+    </script>
+</head>
+<body>
+    <noscript>请启用 JavaScript 以完成跳转。</noscript>
+</body>
+</html>
