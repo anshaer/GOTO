@@ -4,25 +4,35 @@
     <meta charset="UTF-8">
     <title>Redirecting...</title>
     <script>
-        // 定义路径映射规则
-        const redirects = {
-            "/01": "https://x.com/Anshaer_TW_TYC",
-            "/02": "https://x02z.com",
-            "/03": "https://abc.com"
-        };
+        // 取得當前網址路徑，並去掉 GitHub Pages 的 repo 名稱（如果有的話）
+        let path = window.location.pathname;
 
-        // 获取当前访问路径
-        const path = window.location.pathname;
-
-        // 如果路径匹配映射表，则跳转
-        if (redirects[path]) {
-            window.location.href = redirects[path];
-        } else {
-            document.write("未找到跳转目标，请检查网址。");
+        // 如果你的 GitHub Pages 網址是 https://你的用戶名.github.io/你的倉庫名/
+        // 你需要去掉 "/你的倉庫名"，只保留 /01 這類的路徑
+        const repoName = "/你的倉庫名"; // ⚠️ 如果是根域名，請設為空字符串 ""
+        if (path.startsWith(repoName)) {
+            path = path.replace(repoName, "");
         }
+
+        // 加載重定向 JSON
+        fetch('/redirects.json') // 確保這個文件能被正確訪問
+            .then(response => response.json())
+            .then(redirects => {
+                if (redirects[path]) {
+                    window.location.href = redirects[path];
+                } else {
+                    document.body.innerHTML = "<h1>未找到跳转目标，请检查网址。</h1>";
+                }
+            })
+            .catch(error => {
+                console.error('Error loading redirects:', error);
+                document.body.innerHTML = "<h1>加载跳转目标失败，请稍后再试。</h1>";
+            });
     </script>
 </head>
 <body>
-    <noscript>请启用 JavaScript 以完成跳转。</noscript>
+    <noscript>
+        <h1>请启用 JavaScript 以完成跳转。</h1>
+    </noscript>
 </body>
 </html>
