@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        // 定义路径映射规则
+        const redirects = {
+            "/01": "https://x.com/Anshaer_TW_TYC",
+            "/02": "https://x02z.com",
+            "/03": "https://abc.com"
+        };
+
+        // 获取当前访问路径
+        const path = window.location.pathname;
+
+        // 如果路径匹配映射表，则跳转
+        if (redirects[path]) {
+            window.location.href = redirects[path];
+        } else {
+            document.write("未找到跳转目标，请检查网址。");
+        }
+    </script>
+</head>
+<body>
+    <noscript>请启用 JavaScript 以完成跳转。</noscript>
+</body>
+</html>
