@@ -6,9 +6,19 @@
     <script>
         let path = decodeURIComponent(window.location.pathname);
 
-        fetch('/redirects.json')
-            .then(response => response.json())
-            .then(redirects => {
+        // 定義所有 JSON 文件的路徑
+        const jsonFiles = [
+            "/redirects1.json",
+            "/redirects2.json"
+        ];
+
+        // 讀取所有 JSON 文件，並合併它們
+        Promise.all(jsonFiles.map(file => fetch(file).then(res => res.json()).catch(() => ({}))))
+            .then(responses => {
+                // 合併所有 JSON 數據
+                const redirects = Object.assign({}, ...responses);
+
+                // 檢查是否有匹配的路徑
                 if (redirects[path]) {
                     window.location.href = redirects[path];
                 } else {
